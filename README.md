@@ -3,6 +3,13 @@ This repository contains UD4H's Health Impact Assessment Application's web-serve
 
 This document contains documentation on accessing this API and interpreting its results.
 
+## Overview
+### What is a Health Module Variant?
+### The EPA-Prime (EPAP) Health Module Variant
+### API Request Types
+### API Response Types
+
 ## Quickstart Tutorial
+### Accessing 
 
 ## API Reference
