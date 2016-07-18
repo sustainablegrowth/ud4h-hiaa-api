@@ -34,7 +34,7 @@ None | n/a
 ### Response Output
 JSON is returned with the following key-value pairs for each field in the EPAP health module variant:
 Key | Description
---------- | -----------
+--- | -----------
 ordinal_position | default field order
 hmvar | field's case-sensitive name
 hmvartype | field data type as defined for PostgreSQL: https://www.postgresql.org/docs/9.3/static/datatype.html#DATATYPE-TABLE
@@ -46,7 +46,7 @@ description | a description of the field, with its data source indicated in brac
 http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 
 #### Example Response:
-'''
+```
 [
   {
     "ordinal_position": 1,
@@ -92,7 +92,7 @@ http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
     "description": "Percent of population experiencing psychological distress (health survey model)"
   }
 ]
-'''
+```
 
 ## Data Request API
 
@@ -107,9 +107,9 @@ http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 
 #### Example Response:
 
-'''
+```
 Blah
-'''
+```
 
 ### Error Messages
 
