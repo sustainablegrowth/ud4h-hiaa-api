@@ -21,7 +21,7 @@ This document is intended to describe the use of the HIAA API by client applicat
 To access the API, users must first register an email address and other information with UD4H.  Contact http://urbandesign4health.com/contact-us-3 to register.  All API requests returning EPAP data must contain a registered email address in a parameter called "clientid".
 
 
-## Metadata API
+## EPAP Metadata API
 
 Base URL: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 
@@ -36,17 +36,16 @@ JSON is returned with the following key-value pairs for each field in the EPAP h
 
 Key | Description
 --- | -----------
-ordinal_position | default field order
-hmvar | field's case-sensitive name
-hmvartype | field data type as defined for PostgreSQL: https://www.postgresql.org/docs/9.3/static/datatype.html#DATATYPE-TABLE
-description | a description of the field, with its data source indicated in brackets
+ordinal_position | Default field order
+hmvar | Field's case-sensitive name
+hmvartype | Field data type as defined for PostgreSQL: https://www.postgresql.org/docs/9.3/static/datatype.html#DATATYPE-TABLE
+description | Description of the field, with its data source indicated in brackets
 
 ### Example Usage
 
-#### Example Request: 
-http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+Copy/paste the following link into a browser: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 
-#### Example Response:
+The above link will return the following JSON (truncated below):
 ```
 [
   {
@@ -73,19 +72,7 @@ http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
     "hmvartype": "numeric",
     "description": "Percent of population that is working age (EPA SLD p_wrkage)"
   },
-  {
-    "ordinal_position": 5,
-    "hmvar": "pct_autoo0",
-    "hmvartype": "numeric",
-    "description": "Percent of households that own zero automobiles (EPA SLD pct_ao0)"
-  },
-  {
-    "ordinal_position": 6,
-    "hmvar": "totemp2010",
-    "hmvartype": "numeric",
-    "description": "2010 Census total jobs/employees, work location (EPA SLD emptot)"
-  },
-<etc.>
+_< snipped for brevity >_
   {
     "ordinal_position": 63,
     "hmvar": "mnt_health",
@@ -95,22 +82,26 @@ http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 ]
 ```
 
-## Data Request API
+## Detail Data Request API
+
+Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/
 
 ### Request Parameters
 
+Parameter | Description
+--------- | -----------
+clientid | Email address associated with the client registration.  See __User Registration__ section above. 
+
 ### Response Output
+JSON is returned with two main branches:
 
-### Example Usage
+1. A GeoJSON-compliant FeatureCollection section containing
+2. A __responseinfo__ section containing information about the request just made:
 
-#### Example Request: 
-http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
-
-#### Example Response:
-
-```
-Blah
-```
+Key | Description
+--- | -----------
+requestid | An id associated with the request and required by the __Summary Data Request API__ (below)
+clientid | Email address associated with the client making the request
 
 ### Error Messages
 
