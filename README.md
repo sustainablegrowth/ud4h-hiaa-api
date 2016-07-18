@@ -1,11 +1,11 @@
 # UD4H Health Plugin API 
 
 ## Overview
-As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a dataset called EPAP ("EPA Prime") that contains, for each of the 223k census block groups in the USA, a set of baseline inputs and health outcomes derived from these inputs.  
+As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a dataset called EPAP ("EPA Prime") that contains, for each of the 220,653 census block groups in the United States, a set of baseline inputs and health outcomes derived from these inputs.  
 
 The baseline inputs are derived from census block group (CBG) polygons attributed with data fields from the Smart Location Database (SLD), the National Land Cover Database (NLCD) and from other census data.  The health outcomes are calculated using coefficients derived from analysis related to indepth research sources like the American Community Survey (ACS).
 
-Access to this dataset and its calculated outcomes is available via a cloud-based web-served health module application program interface (API).  The API responds to three types of requests:
+Access to this dataset and its calculated outcomes is available via a cloud-based web-served health module application programming interface (API).  The API responds to three types of requests:
 
 1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the EPAP health module variant's data model.  Contains descriptions.
 
