@@ -24,6 +24,7 @@ To access the API, users must first register an email address and other informat
 ## EPAP Metadata API
 
 Base URL: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+HTTP Request Type: GET
 
 ### Request Parameters
 
@@ -72,7 +73,9 @@ The above link will return the following JSON (truncated below):
     "hmvartype": "numeric",
     "description": "Percent of population that is working age (EPA SLD p_wrkage)"
   },
-*< snipped for brevity >*
+<pre>
+<i>< snipped for brevity ></i>
+</pre>
   {
     "ordinal_position": 63,
     "hmvar": "mnt_health",
@@ -81,6 +84,9 @@ The above link will return the following JSON (truncated below):
   }
 ]
 ```
+### API Error Messages
+N/a.
+
 
 ## Detail Data Request API
 
