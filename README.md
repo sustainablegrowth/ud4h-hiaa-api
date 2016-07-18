@@ -72,7 +72,7 @@ The above link will return the following JSON (truncated below):
     "hmvartype": "numeric",
     "description": "Percent of population that is working age (EPA SLD p_wrkage)"
   },
-_< snipped for brevity >_
+*< snipped for brevity >*
   {
     "ordinal_position": 63,
     "hmvar": "mnt_health",
