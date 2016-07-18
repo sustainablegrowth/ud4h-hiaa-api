@@ -1,15 +1,117 @@
-# HIAA API (ud4h-hiaa-api)
-This repository contains UD4H's Health Impact Assessment Application's web-served API used to access health impacts produced by any of the Health Module Variants developed by UD4H for EPA.
-
-This document contains documentation on accessing this API and interpreting its results.
+# UD4H Health Plugin API 
 
 ## Overview
-### What is a Health Module Variant?
-### The EPA-Prime (EPAP) Health Module Variant
-### API Request Types
-### API Response Types
+As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a dataset called EPAP ("EPA Prime") that contains, for each of the 223k census block groups in the USA, a set of baseline inputs and health outcomes derived from these inputs.  
 
-## Quickstart Tutorial
-### Accessing 
+The baseline inputs are derived from census block group (CBG) polygons attributed with data fields from the Smart Location Database (SLD), the National Land Cover Database (NLCD) and from other census data.  The health outcomes are calculated using coefficients derived from analysis related to indepth research sources like the American Community Survey (ACS).
 
-## API Reference
+Access to this dataset and its calculated outcomes is available via a cloud-based web-served health module application program interface (API).  The API responds to three types of requests:
+
+1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the EPAP health module variant's data model.  Contains descriptions.
+
+2. Read-only "baseline" requests containing one or more 12-digit CBG unique identifier codes (called GEOID10).  The API returns EPAP baseline inputs and health outcomes attached to a feature collection in GeoJSON format. 
+
+3. Custom-input requests containing CBG GEOID10s plus, for each GEOID10, one or more fields containing custom input values for one or more of the EPAP input fields.  The API returns the custom inputs, EPAP baseline inputs for any inputs missing from the request, and custom health outcomes calculated using the custom inputs.  These custom results are attached to a feature collection in GeoJSON format. 
+
+This document is intended to describe the use of the HIAA API by client applications.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
+
+
+## User Registration
+
+To access the API, users must first register an email address and other information with UD4H.  Contact http://urbandesign4health.com/contact-us-3 to register.  All API requests returning EPAP data must contain a registered email address in a parameter called "clientid".
+
+
+## Metadata API
+
+Base URL: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+
+### Request Parameters
+
+Parameter | Description
+--------- | -----------
+None | n/a
+
+### Response Output
+JSON is returned with the following key-value pairs for each field in the EPAP health module variant:
+Key | Description
+--------- | -----------
+ordinal_position | default field order
+hmvar | field's case-sensitive name
+hmvartype | field data type as defined for PostgreSQL: https://www.postgresql.org/docs/9.3/static/datatype.html#DATATYPE-TABLE
+description | a description of the field, with its data source indicated in brackets
+
+### Example Usage
+
+#### Example Request: 
+http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+
+#### Example Response:
+'''
+[
+  {
+    "ordinal_position": 1,
+    "hmvar": "geoid10cbg",
+    "hmvartype": "character varying",
+    "description": "2010 Census block group ID (EPA SLD geoid10)"
+  },
+  {
+    "ordinal_position": 2,
+    "hmvar": "totpop2010",
+    "hmvartype": "numeric",
+    "description": "2010 Census total population (EPA SLD totpop10)"
+  },
+  {
+    "ordinal_position": 3,
+    "hmvar": "tothhs2010",
+    "hmvartype": "numeric",
+    "description": "2010 Census total households (EPA SLD hh)"
+  },
+  {
+    "ordinal_position": 4,
+    "hmvar": "p_wrkage",
+    "hmvartype": "numeric",
+    "description": "Percent of population that is working age (EPA SLD p_wrkage)"
+  },
+  {
+    "ordinal_position": 5,
+    "hmvar": "pct_autoo0",
+    "hmvartype": "numeric",
+    "description": "Percent of households that own zero automobiles (EPA SLD pct_ao0)"
+  },
+  {
+    "ordinal_position": 6,
+    "hmvar": "totemp2010",
+    "hmvartype": "numeric",
+    "description": "2010 Census total jobs/employees, work location (EPA SLD emptot)"
+  },
+<etc.>
+  {
+    "ordinal_position": 63,
+    "hmvar": "mnt_health",
+    "hmvartype": "double precision",
+    "description": "Percent of population experiencing psychological distress (health survey model)"
+  }
+]
+'''
+
+## Data Request API
+
+### Request Parameters
+
+### Response Output
+
+### Example Usage
+
+#### Example Request: 
+http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+
+#### Example Response:
+
+'''
+Blah
+'''
+
+### Error Messages
+
+#### Missing GEOID10s
+Here's a description.
