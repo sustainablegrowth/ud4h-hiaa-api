@@ -33,6 +33,7 @@ None | n/a
 
 ### Response Output
 JSON is returned with the following key-value pairs for each field in the EPAP health module variant:
+
 Key | Description
 --- | -----------
 ordinal_position | default field order
