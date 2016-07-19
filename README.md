@@ -50,7 +50,7 @@ description | Description of the field, with its data source indicated in bracke
 
 Copy/paste the following link into a browser: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 
-The above link will return the following JSON (truncated below):
+The above link will return the following JSON (snipped for brevity):
 ```
 [
   {
@@ -80,9 +80,6 @@ The above link will return the following JSON (truncated below):
   }
 ]
 ```
-### API Error Messages
-None.
-
 
 ## Detail Data Request API
 Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/
@@ -94,7 +91,7 @@ HTTP Request Type: POST
 Parameter | Description
 --------- | -----------
 clientid | Required. Email address associated with the client registration. See __User Registration__ section above. 
-postjson | Required. JSON-formatted string containing at least a set of one or more 12-character GEOID10s.  This parameter can also contain other custom input values whose keys case-sensitive match the EPAP schema; use __EPAP Schema Metadata API__ (above) to get a list of field names in the EPAP schema.  The 'postjson' parameter must adhere to the GeoJSON "FeatureCollection" format; see __Example Usage__ in the Summary Request API (below) for an example of a 'postjson' parameter format.
+postjson | Required. JSON-formatted string containing at least a set of one or more 12-character GEOID10s.  This parameter can also contain other custom input values whose keys case-sensitive match the EPAP schema; use __EPAP Schema Metadata API__ (above) to get a list of field names in the EPAP schema.  The 'postjson' parameter must adhere to the GeoJSON "FeatureCollection" format; see __Example Usage__ in the Summary Request API (below) for an example of a 'postjson' parameter format.  Though 'postjson' otherwise needs to be in GeoJSON "FeatureCollection" format, the actual 'geometry' section (large one with polygon coordiantes) is not used and can be omitted to save request space.
 baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson parameter and simply return all baseline data.
 
 Detail request API calls are usually combined with Summary request calls (see below).  See __Example Usage__ in the Summary Request API at the end of this document for such a combined usage example.
@@ -119,27 +116,19 @@ date_time_stamp | When the request was made.
 
 Detail request API calls are usually combined with Summary request calls.  See __Example Usage__ in the Summary Request API (below) for such a combined example.
 
-### Tips
-* 'postjson' needs to be in GeoJSON "FeatureCollection" format, but the actual polygon vertices are not required and can be omitted to save request space.
-
-
-
-
-
-
 
 
 ## Summary Data Request API
-Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/
+Base URL: http://api.ud4htools.com/hmapi_get_summary_json/EPAP/
 
-HTTP Request Type: POST
+HTTP Request Type: GET
 
 ### Request Parameters
 
 Parameter | Description
 --------- | -----------
 clientid | Required. Email address associated with the client registration. See __User Registration__ section above. 
-postjson | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
+requestid | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
 baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson variable and simply return all baseline data.
 
 
@@ -282,6 +271,16 @@ The following is a sample of the response output returned from a call to the det
 ```
 
 
+## Error Handling
 
+If a problem with the request is encountered and therefore it cannot be fulfilled, instead of a GeoJSON-formatted response, a JSON-formatted error message will be returned.  All reponses from the API whould be immediately inspected in the client application to determine if such an error message was returned and to handle it appropriately.  The error message format is consistent.  THe following is an example request error message:
 
-### Tips
+```
+{
+type: "Error",
+Application: "HIAA",
+ErrorSource: "hmapi_get_summary_json",
+Error: "Error occured saving geoid10 list. Likely one of your geoid10 values is invalid.",
+DateTimeStamp: "2016-07-18 23:13:22.183920"
+}
+```
