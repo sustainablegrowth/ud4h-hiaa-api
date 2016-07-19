@@ -9,11 +9,11 @@ Access to this dataset and its calculated outcomes is available via a cloud-base
 
 1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the EPAP health module variant's data model.  Contains descriptions.
 
-2. Read-only "baseline" requests containing one or more 12-digit CBG unique identifier codes (called GEOID10).  The API returns EPAP baseline inputs and health outcomes attached to a feature collection in GeoJSON format. 
+2. Detail data requests.  If only 12-digit CBG unique identifier codes (GEOID10s) are supplied as parameters, the API returns EPAP baseline inputs and health outcomes attached to a feature collection in GeoJSON format.  If, additionally, the request also includes custom input values for one or more keys matching EPAP input fields, the API returns the custom inputs, EPAP baseline inputs for any inputs missing from the request, and custom health outcomes calculated using the custom inputs. 
 
-3. Custom-input requests containing CBG GEOID10s plus, for each GEOID10, one or more fields containing custom input values for one or more of the EPAP input fields.  The API returns the custom inputs, EPAP baseline inputs for any inputs missing from the request, and custom health outcomes calculated using the custom inputs.  These custom results are attached to a feature collection in GeoJSON format. 
+3. Summary data requests.  The API takes a supplied requestid (returned from a previous detail data request-- see #2 above) and returns a GeoJSON-formatted response containing a single polygon representing the merge/dissolve of all CBG polygons included in the original detail request.  The summary "study area" geometry is attributed with summarized/aggregated input amd health outcome field values.
 
-This document is intended to describe the use of the HIAA API by client applications.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
+This document is intended to describe how to implement access to the UD4H Health Plugin API inside client applications.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
 
 
 ## User Registration
@@ -21,7 +21,7 @@ This document is intended to describe the use of the HIAA API by client applicat
 To access the API, users must first register an email address and other information with UD4H.  Contact http://urbandesign4health.com/contact-us-3 to register.  All API requests returning EPAP data must contain a registered email address in a parameter called "clientid".
 
 
-## EPAP Metadata Schema API
+## EPAP Schema Metadata API
 Base URL: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 HTTP Request Type: GET
 
