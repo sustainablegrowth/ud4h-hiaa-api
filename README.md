@@ -128,9 +128,7 @@ HTTP Request Type: GET
 Parameter | Description
 --------- | -----------
 clientid | Required. Email address associated with the client registration. See __User Registration__ section above. 
-requestid | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
-baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson variable and simply return all baseline data.
-
+requestid | Required. The integer requestid returned from a previous call to the detail request API.  Use __Response Output__ section of __Detail Data Request API__ (above) for more information about requestid.  
 
 ### Response Output
 a GeoJSON-formatted string is returned with two main branches:
