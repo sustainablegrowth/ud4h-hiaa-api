@@ -21,8 +21,7 @@ This document is intended to describe the use of the HIAA API by client applicat
 To access the API, users must first register an email address and other information with UD4H.  Contact http://urbandesign4health.com/contact-us-3 to register.  All API requests returning EPAP data must contain a registered email address in a parameter called "clientid".
 
 
-## EPAP Metadata API
-
+## EPAP Metadata Schema API
 Base URL: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
 HTTP Request Type: GET
 
@@ -33,7 +32,7 @@ Parameter | Description
 None | n/a
 
 ### Response Output
-JSON is returned with the following key-value pairs for each field in the EPAP health module variant:
+EPAP schema is returned in JSON format, with the following key-value pairs for each field in the EPAP health module variant:
 
 Key | Description
 --- | -----------
@@ -67,15 +66,7 @@ The above link will return the following JSON (truncated below):
     "hmvartype": "numeric",
     "description": "2010 Census total households (EPA SLD hh)"
   },
-  {
-    "ordinal_position": 4,
-    "hmvar": "p_wrkage",
-    "hmvartype": "numeric",
-    "description": "Percent of population that is working age (EPA SLD p_wrkage)"
-  },
-<pre>
-<i>< snipped for brevity ></i>
-</pre>
+< snipped for brevity >
   {
     "ordinal_position": 63,
     "hmvar": "mnt_health",
@@ -85,18 +76,20 @@ The above link will return the following JSON (truncated below):
 ]
 ```
 ### API Error Messages
-N/a.
+None.
 
 
 ## Detail Data Request API
-
 Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/
+HTTP Request Type: POST
 
 ### Request Parameters
 
 Parameter | Description
 --------- | -----------
 clientid | Email address associated with the client registration.  See __User Registration__ section above. 
+postjson | JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys match the EPAP schema.
+
 
 ### Response Output
 JSON is returned with two main branches:
