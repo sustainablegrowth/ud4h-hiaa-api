@@ -112,7 +112,7 @@ clientid | Email address associated with the client making the request
 ### Example Usage
 
 ```
-jsonDetail = '{
+custDetail = '{
   "type": "FeatureCollection",
   "features": [
     {
@@ -136,15 +136,47 @@ jsonDetail = '{
   ]
 }';
 
-// 
+$("body").css("cursor", "wait");
 
-$.post("http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/",
-  {
-    postjson: JSON.stringify(jsonDetail),
-    clientid: 'registered_email@client.com',
-    baseonly: '0'
-  },
-  // etc.
+jsonDetail = JSON.parse(custDetail);
+
+    $.post("/hmapi_post_custom_inputs/EPAP/",
+      {
+        postjson: JSON.stringify(jsonDetail),
+        clientid: 'registered_email@client.com',
+        baseonly: '0'
+      },
+      function(data,status){
+    console.log("Response Status: " + status);
+    customResponseType = data.type ;
+    if (customResponseType == "FeatureCollection") {
+      console.log("Valid JSON FeatureCollection returned.  Adding to CUSTOM map feature group");
+      // add detail json to map
+
+      // get requestid from json
+      requestid = data.responseinfo.requestid ;
+
+      // follow up with summary request
+      $.getJSON("/hmapi_get_summary_json/EPAT?clientid=post@client.com&requestid=" + requestid, function(data) { 
+        summaryResponseType = data.type ;
+        if (summaryResponseType == "FeatureCollection") {
+          console.log("Valid JSON FeatureCollection returned.  Adding to SUMMARY map feature group");
+          // add detail json to map
+
+        } else {
+          console.log("summaryResponseType = " + summaryResponseType);
+          alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
+        }
+      });       
+
+    } else {
+      console.log("Error based on non-GIS customResponseType: " + customResponseType);
+      alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
+    };
+    $("body").css("cursor", "default");
+
+    });
+
 ```
 
 
