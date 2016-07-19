@@ -16,9 +16,9 @@ Access to this dataset and its calculated outcomes is available via a web-served
 
 ## ArcGIS Tool
 
-Non-technical users can download and install an <a href="">ArcToolbox plug-in tool which handles communication with the UD4H API</a>.  User documentation is available <a href="">here</a>.
+Non-technical users can download and install an <a href="">ArcToolbox plug-in tool which handles communication with the UD4H API</a>.  User documentation is available in an appendix of <a href="">this document</a>.
 
-This remainder of this document is intended to describe how to implement access to the UD4H Health Plugin API directly, from inside a client application.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
+The remainder of this document is intended to describe how to implement access to the UD4H Health Plugin API programatically, from inside a client application.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
 
 ## User Registration
 
@@ -27,6 +27,7 @@ To access the API, users must first register an email address and other informat
 
 ## EPAP Schema Metadata API
 Base URL: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+
 HTTP Request Type: GET
 
 ### Request Parameters
@@ -85,20 +86,22 @@ None.
 
 ## Detail Data Request API
 Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/
+
 HTTP Request Type: POST
 
 ### Request Parameters
 
 Parameter | Description
 --------- | -----------
-clientid | Email address associated with the client registration.  See __User Registration__ section above. 
-postjson | JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys match the EPAP schema.
+clientid | Required. Email address associated with the client registration. See __User Registration__ section above. 
+postjson | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
+baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson variable and simply return all baseline data.
 
 
 ### Response Output
-JSON is returned with two main branches:
+a GeoJSON-formatted string is returned with two main branches:
 
-1. A GeoJSON-compliant FeatureCollection section containing
+1. A GeoJSON-compliant FeatureCollection section containing, for each feature in the  the polygonal 
 2. A __responseinfo__ section containing information about the request just made:
 
 Key | Description
@@ -106,7 +109,45 @@ Key | Description
 requestid | An id associated with the request and required by the __Summary Data Request API__ (below)
 clientid | Email address associated with the client making the request
 
+### Example Usage
+
+```
+jsonDetail = '{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature", 
+      "properties": {
+        "geoid10cbg": "550250031004", 
+        "totemp2010": 111, 
+        "totpop2010": 222, 
+        "tothhs2010": 333
+      }
+    },
+    {
+      "type": "Feature", 
+      "properties": {
+        "geoid10cbg": "550250031002", 
+        "totemp2010": 444, 
+        "totpop2010": 555, 
+        "tothhs2010": 666
+      }
+    }   
+  ]
+}';
+
+// 
+
+$.post("http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/",
+  {
+    postjson: JSON.stringify(jsonDetail),
+    clientid: 'registered_email@client.com',
+    baseonly: '0'
+  },
+  // etc.
+```
+
+
+
 ### Error Messages
 
-#### Missing GEOID10s
-Here's a description.
