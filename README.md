@@ -97,6 +97,8 @@ clientid | Required. Email address associated with the client registration. See 
 postjson | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
 baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson variable and simply return all baseline data.
 
+Detail request API calls are usually combined with Summary request calls (see below).  See __Example Usage__ in the Summary Request API at the end of this document for such a combined usage example.
+
 
 ### Response Output
 a GeoJSON-formatted string is returned with two main branches:
@@ -106,10 +108,60 @@ a GeoJSON-formatted string is returned with two main branches:
 
 Key | Description
 --- | -----------
-requestid | An id associated with the request and required by the __Summary Data Request API__ (below)
-clientid | Email address associated with the client making the request
+requestid | An id associated with the request. The __Summary Data Request API__ (see below) requires requestid.
+clientid | Email address associated with the client making the request.
+hm_variant | Name of the health module variant requested, e.g. EPAP.
+baseline_only_request | Boolean indicating that the server received a 'baseonly' of True.
+custom_request | Boolean indicating that custom fields were detected by the API in the request's 'postjson' parameter
+featurecount | Total number of census block groups in the request.
+request_processing_time | Total time the API took to fulfill request. This total does not include processing time in the client before or after the request is made.
+date_time_stamp | When the request was made.
+
+Detail request API calls are usually combined with Summary request calls.  See __Example Usage__ in the Summary Request API (below) for such a combined example.
+
+### Error Messages
+
+
+
+
+
+
+
+
+## Summary Data Request API
+Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/EPAP/
+
+HTTP Request Type: POST
+
+### Request Parameters
+
+Parameter | Description
+--------- | -----------
+clientid | Required. Email address associated with the client registration. See __User Registration__ section above. 
+postjson | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
+baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson variable and simply return all baseline data.
+
+
+### Response Output
+a GeoJSON-formatted string is returned with two main branches:
+
+1. A GeoJSON-compliant FeatureCollection section containing, for each feature in the  the polygonal 
+2. A __responseinfo__ section containing information about the request just made:
+
+Key | Description
+--- | -----------
+requestid | An id associated with the request. The __Summary Data Request API__ (see below) requires requestid.
+clientid | Email address associated with the client making the request.
+hm_variant | Name of the health module variant requested, e.g. EPAP.
+baseline_only_request | Boolean indicating that the server received a 'baseonly' of True.
+custom_request | Boolean indicating that custom fields were detected by the API in the request's 'postjson' parameter
+featurecount | Total number of census block groups in the request.
+request_processing_time | Total time the API took to fulfill request. This total does not include processing time in the client before or after the request is made.
+date_time_stamp | When the request was made.
+
 
 ### Example Usage
+Summary request API calls typically follow Detail request calls. The following code demonstrates an example where a json variable containing both GEOID10 values and other values whose keys match the EPAP schema are contained in the postjson parameter, i.e. a "custom" request.
 
 ```
 custDetail = '{
@@ -118,7 +170,7 @@ custDetail = '{
     {
       "type": "Feature", 
       "properties": {
-        "geoid10cbg": "550250031004", 
+        "geoid10cbg": "060014003004", 
         "totemp2010": 111, 
         "totpop2010": 222, 
         "tothhs2010": 333
@@ -127,12 +179,12 @@ custDetail = '{
     {
       "type": "Feature", 
       "properties": {
-        "geoid10cbg": "550250031002", 
-        "totemp2010": 444, 
-        "totpop2010": 555, 
-        "tothhs2010": 666
+        "geoid10cbg": "060014003003", 
+        "totemp2010": 777, 
+        "totpop2010": 888, 
+        "tothhs2010": 999
       }
-    }   
+    }    
   ]
 }';
 
@@ -151,18 +203,16 @@ jsonDetail = JSON.parse(custDetail);
     customResponseType = data.type ;
     if (customResponseType == "FeatureCollection") {
       console.log("Valid JSON FeatureCollection returned.  Adding to CUSTOM map feature group");
-      // add detail json to map
-
+      // add detail json to leaflet map directly. Very easy!
       // get requestid from json
       requestid = data.responseinfo.requestid ;
 
       // follow up with summary request
-      $.getJSON("/hmapi_get_summary_json/EPAT?clientid=post@client.com&requestid=" + requestid, function(data) { 
+      $.getJSON("/hmapi_get_summary_json/EPAP?clientid=registered_email@client.com&requestid=" + requestid, function(data) { 
         summaryResponseType = data.type ;
         if (summaryResponseType == "FeatureCollection") {
           console.log("Valid JSON FeatureCollection returned.  Adding to SUMMARY map feature group");
-          // add detail json to map
-
+          // add detail json to a leaflet map directly. Very easy!
         } else {
           console.log("summaryResponseType = " + summaryResponseType);
           alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
@@ -179,7 +229,58 @@ jsonDetail = JSON.parse(custDetail);
 
 ```
 
+The following is a sample of the response output returned from a call to the detail request API:
+
+```
+{
+   "type": "FeatureCollection",
+   "responseinfo": {
+      "hm_variant": "EPAP",
+      "request_processing_time": "0.624 secs",
+      "date_time_stamp": "2016-07-18 22:15:53.516710",
+      "baseline_only_request": "False",
+      "custom_request": "True",
+      "clientid": "registered_email@client.com",
+      "featurecount": "3",
+      "requestid": "9876"
+   },
+   "features": [
+      {
+         "geometry": {
+            "type": "MultiPolygon",
+            "coordinates": [
+               [ [ [
+                      -89.303226235,
+                      43.07796197
+                   ],
+                  < snipped for brevity >                    
+                   [
+                      -89.3032322349999,
+                      43.07775997
+                   ]
+                ] ] ]
+         },
+         "type": "Feature",
+         "properties": {
+            "biketr_p_t": 0.0398637961257863,
+            "totemp2010": 777,
+            "pct_nohsed": 0.160287081339713,
+            "walkle_d_h": 63381.9524348232,
+            "retailempl": 57,
+            "pct_childr": 0.194885361552028,
+            "pct_worker": 0.696604600219058,
+            "pct_higinc": 0.319796954314721,
+           < snipped for brevity > 
+            "autotr_p_t": 0.619032580022476,
+            "geoid10cbg": "060250031004"
+         },
+         "id": "060250031004"
+      }
+   ]
+}
+```
+
+
 
 
 ### Error Messages
-
