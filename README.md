@@ -9,7 +9,7 @@ Access to this dataset and its calculated outcomes is available via a web-served
 
 1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the EPAP health module variant's data model.  Contains data types and descriptions.
 
-2. Detail data requests.  If only 12-digit CBG unique identifier codes (GEOID10s) are supplied as parameters, the API returns EPAP baseline inputs and health outcomes attached to a feature collection in GeoJSON format.  If, additionally, the request also includes custom input values for one or more keys matching the EPAP schema, the API returns the custom inputs, EPAP baseline defaults for any inputs missing from the request, and custom health outcomes calculated using the custom inputs and needed baseline defaults. 
+2. Detail data requests.  If only 12-digit CBG unique identifier codes (GEOID10s) are supplied as parameters, the API returns EPAP baseline inputs and health outcomes attached to a feature collection of the requested CBGs in GeoJSON format.  If, additionally, the request also includes custom input values for one or more keys matching the EPAP schema, the API returns the custom inputs, with EPAP baseline defaults for any inputs missing from the request, and custom health outcomes calculated using the custom inputs and needed baseline defaults. 
 
 3. Summary data requests.  The API takes a supplied requestid (returned from a previous detail data request-- see #2 above) and returns a GeoJSON-formatted response containing a single polygon representing the merge/dissolve of all CBG polygons included in the original detail request.  This summary "study area" geometry is attributed with summarized/aggregated input amd health outcome EPAP schema field values.
 
@@ -94,8 +94,8 @@ HTTP Request Type: POST
 Parameter | Description
 --------- | -----------
 clientid | Required. Email address associated with the client registration. See __User Registration__ section above. 
-postjson | Required. JSON-formatted string containing at least a set of 12-character GEOID10s, but can also contain other cutom input values whose keys case-sensitive match the EPAP schema.  Use __EPAP Schema Metadata API__ (above) to get a list of available field names.  See 
-baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson variable and simply return all baseline data.
+postjson | Required. JSON-formatted string containing at least a set of one or more 12-character GEOID10s.  This parameter can also contain other custom input values whose keys case-sensitive match the EPAP schema; use __EPAP Schema Metadata API__ (above) to get a list of field names in the EPAP schema.  The 'postjson' parameter must adhere to the GeoJSON "FeatureCollection" format; see __Example Usage__ in the Summary Request API (below) for an example of a 'postjson' parameter format.
+baseonly | Optional.  If set to '1', directs API to ignore any custom inputs in the supplied postjson parameter and simply return all baseline data.
 
 Detail request API calls are usually combined with Summary request calls (see below).  See __Example Usage__ in the Summary Request API at the end of this document for such a combined usage example.
 
@@ -103,8 +103,8 @@ Detail request API calls are usually combined with Summary request calls (see be
 ### Response Output
 a GeoJSON-formatted string is returned with two main branches:
 
-1. A GeoJSON-compliant FeatureCollection section containing, for each feature in the  the polygonal 
-2. A __responseinfo__ section containing information about the request just made:
+1. A GeoJSON-formatted FeatureCollection section containing each CBG polygon feature in the request, attributed with EPAP schema properties (inputs and health outcomes, baseline and/or custom).
+2. A __responseinfo__ section containing information about the request:
 
 Key | Description
 --- | -----------
@@ -119,7 +119,8 @@ date_time_stamp | When the request was made.
 
 Detail request API calls are usually combined with Summary request calls.  See __Example Usage__ in the Summary Request API (below) for such a combined example.
 
-### Error Messages
+### Tips
+* 'postjson' needs to be in GeoJSON "FeatureCollection" format, but the actual polygon vertices are not required and can be omitted to save request space.
 
 
 
@@ -283,4 +284,4 @@ The following is a sample of the response output returned from a call to the det
 
 
 
-### Error Messages
+### Tips
