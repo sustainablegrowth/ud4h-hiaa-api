@@ -142,10 +142,8 @@ Key | Description
 --- | -----------
 requestid | An id associated with the request. The __Summary Data Request API__ (see below) requires requestid.
 clientid | Email address associated with the client making the request.
-hm_variant | Name of the health module variant requested, e.g. EPAP.
-baseline_only_request | Boolean indicating that the server received a 'baseonly' of True.
 custom_request | Boolean indicating that custom fields were detected by the API in the request's 'postjson' parameter
-featurecount | Total number of census block groups in the request.
+detail_feature_count | Total number of census block groups in the original detail request.
 request_processing_time | Total time the API took to fulfill request. This total does not include processing time in the client before or after the request is made.
 date_time_stamp | When the request was made.
 
@@ -269,6 +267,49 @@ The following is a sample of the response output returned from a call to the det
    ]
 }
 ```
+
+The following is a sample of the GeoJSON returned from a summary request:
+```
+{
+  "type": "FeatureCollection",
+  "responseinfo": {
+    date_time_stamp: "2016-07-18 23:18:11.664985",
+    detail_feature_count: "2",
+    custom_request: "True",
+    request_processing_time: "0.345 secs",
+    requestid: "2608",
+    clientid: "registered_email@client.com"
+  },
+ "features": [
+    {
+       "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+             [ [ [
+                    -89.303226235,
+                    43.07796197
+                 ],
+                < snipped for brevity >                    
+                 [
+                    -89.3032322349999,
+                    43.07775997
+                 ]
+              ] ] ]
+       },
+       "type": "Feature",
+       "properties": {
+          "biketr_p_t": 0.343534543543,
+          "totemp2010": 1254,
+          "pct_nohsed": 0.8567744,
+         "pct_higinc": 0.1233556435,
+       < snipped for brevity > 
+          "autotr_p_t": 0.657546463563
+       }
+    }
+ ]
+}
+```
+
 
 
 ## Error Handling
