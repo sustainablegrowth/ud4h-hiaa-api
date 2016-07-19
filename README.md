@@ -5,16 +5,20 @@ As part of its ongoing work on the Health Impact Assessment Application (HIAA), 
 
 The baseline inputs are derived from census block group (CBG) polygons attributed with data fields from the Smart Location Database (SLD), the National Land Cover Database (NLCD) and from other census data.  The health outcomes are calculated using coefficients derived from analysis related to indepth research sources like the American Community Survey (ACS).
 
-Access to this dataset and its calculated outcomes is available via a cloud-based web-served health module application programming interface (API).  The API responds to three types of requests:
+Access to this dataset and its calculated outcomes is available via a web-served health module application programming interface (API).  The API responds to three types of requests:
 
-1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the EPAP health module variant's data model.  Contains descriptions.
+1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the EPAP health module variant's data model.  Contains data types and descriptions.
 
-2. Detail data requests.  If only 12-digit CBG unique identifier codes (GEOID10s) are supplied as parameters, the API returns EPAP baseline inputs and health outcomes attached to a feature collection in GeoJSON format.  If, additionally, the request also includes custom input values for one or more keys matching EPAP input fields, the API returns the custom inputs, EPAP baseline inputs for any inputs missing from the request, and custom health outcomes calculated using the custom inputs. 
+2. Detail data requests.  If only 12-digit CBG unique identifier codes (GEOID10s) are supplied as parameters, the API returns EPAP baseline inputs and health outcomes attached to a feature collection in GeoJSON format.  If, additionally, the request also includes custom input values for one or more keys matching the EPAP schema, the API returns the custom inputs, EPAP baseline defaults for any inputs missing from the request, and custom health outcomes calculated using the custom inputs and needed baseline defaults. 
 
-3. Summary data requests.  The API takes a supplied requestid (returned from a previous detail data request-- see #2 above) and returns a GeoJSON-formatted response containing a single polygon representing the merge/dissolve of all CBG polygons included in the original detail request.  The summary "study area" geometry is attributed with summarized/aggregated input amd health outcome field values.
+3. Summary data requests.  The API takes a supplied requestid (returned from a previous detail data request-- see #2 above) and returns a GeoJSON-formatted response containing a single polygon representing the merge/dissolve of all CBG polygons included in the original detail request.  This summary "study area" geometry is attributed with summarized/aggregated input amd health outcome EPAP schema field values.
 
-This document is intended to describe how to implement access to the UD4H Health Plugin API inside client applications.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
 
+## ArcGIS Tool
+
+Non-technical users can download and install an <a href="">ArcToolbox plug-in tool which handles communication with the UD4H API</a>.  User documentation is available <a href="">here</a>.
+
+This remainder of this document is intended to describe how to implement access to the UD4H Health Plugin API directly, from inside a client application.  It is intended for technical users familiar with programming HTTP requests that send and return JSON.
 
 ## User Registration
 
