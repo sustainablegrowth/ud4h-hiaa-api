@@ -1,7 +1,7 @@
 # UD4H Health Plugin API 
 
-## API Documenation
-EPA-Prime: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+## API Documenation Links
+EPA-Prime: https://github.com/sustainablegrowth/ud4h-hiaa-api/blob/master/epap-doc.md
 
-NCI Version 1: http://api.ud4htools.com/hmapi_get_varmeta_json/EPAP/
+NCI Version 1: https://github.com/sustainablegrowth/ud4h-hiaa-api/blob/master/nciv1s-doc.md
 
