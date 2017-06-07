@@ -1,15 +1,15 @@
-# UD4H NCI Health Module API 
+# UD4H's NCI 5 State / 6 variable (NCIV1S) Health Module Variant 
 
-## Overview
-As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a variant called NCIV1S ("NCI 5 States").  The module consists of a dataset that contains, for each of the 220,653 census block groups in the United States, a set of 6 baseline characteristics.
+## API Documentation Overview
+As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a variant called NCIV1S ("NCI 5 States").  The module consists of a dataset that contains, for each of the 220,653 census block groups (CBGs) in the United States, a set of baseline characteristics (variables).
 
-The baseline inputs are derived from census block group (CBG) polygons attributed with data fields from the Smart Location Database (SLD), the National Land Cover Database (NLCD) and from other census data.  The health outcomes are calculated using coefficients derived from analysis related to indepth research sources like the American Community Survey (ACS).
+Access to this dataset is available via a web-served health module application programming interface (API).  The NCIV1S API exposes 3 different interfaces to registered clients:
 
-Access to this dataset and its calculated outcomes is available via a web-served health module application programming interface (API).  The NCIV1S API responds to 2 types of requests:
+1. Metadata requests.  The API returns a JSON list of all the baseline fields in the NCIV1S health module variant's data model.  Contains data types and descriptions for each variable.  The data is returned in JSON format.
 
-1. Metadata requests.  The API returns a JSON list of all the input and health outcome fields in the NCIV1S health module variant's data model.  Contains data types and descriptions.
+2. Baseline data detail requests.  For each 12-digit CBG GEOID10 included in a properly-formatted JSON object posted to the API, the API returns NCIV1S baseline variables for each requested CBG, as well as geometries representing the requested CBGs, and an overall RequestID (see #3 below).  The data is returned in GeoJSON format.
 
-2. Baseline data requests.  If only 12-digit CBG unique identifier codes (GEOID10s) are supplied as parameters, the API returns NCIV1S baseline inputs and health outcomes for each requested CBG, as well as the CBG geometries.  The data is returned in GeoJSON format.
+3. Baseline request summary requests.  Clients submit a RequestID returned from a previously executed "Baseline data detail request" (#2 above), and the API returns a single feature containing a summary aggregation of the baseline variable numeric values, as well as a geometry representing the spatial aggregation of the CBG geometries in the original request.  The data is returned in GeoJSON format.
 
 
 ## User Registration
