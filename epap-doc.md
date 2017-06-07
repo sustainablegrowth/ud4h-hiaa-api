@@ -1,4 +1,4 @@
-# UD4H Health Plugin API 
+# UD4H EPAP Variant API
 
 ## Overview
 As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a dataset called EPAP ("EPA Prime") that contains, for each of the 220,653 census block groups in the United States, a set of baseline inputs and health outcomes derived from these inputs.  
