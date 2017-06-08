@@ -1,7 +1,7 @@
-# UD4H's NCI 5 State / 6 variable (NCIV1S) Health Module Variant 
+# UD4H's NCI 5-States (NCIV1S) Health Module Variant 
 
 ## API Documentation Overview
-As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a variant called NCIV1S ("NCI 5 States").  The module consists of a dataset that contains, for each of the 220,653 census block groups (CBGs) in the United States, a set of baseline characteristics (variables).
+As part of its ongoing work on the Health Impact Assessment Application (HIAA), UD4H (http://www.ud4h.com) has created a health module variant called NCIV1S ("NCI 5-States").  The module API connects clients to a dataset that contains, for each of the census block groups (CBGs) in 5 states-- California, Michigan, Washington, Florida and Maryland-- a set of baseline characteristics (variables).
 
 Access to this dataset is available via a web-served health module application programming interface (API).  The NCIV1S API exposes 3 different interfaces to registered clients:
 
