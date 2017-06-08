@@ -134,6 +134,8 @@ date_time_stamp | When the request was made.
 Summary request API calls typically follow Detail request calls. The following code demonstrates an example where a json variable containing both GEOID10 values and other values whose keys match the NCIV1S schema are contained in the postjson parameter, i.e. a "custom" request.
 
 ```
+clientToken = "myregisteredemail@domain.com" ; // REPLACE with your unique registered email token
+
 custDetail = '{
  "type": "FeatureCollection",
  "features": [
@@ -147,44 +149,45 @@ custDetail = '{
    } 
  ] 
 }';
-
-$("body").css("cursor", "wait");
-
 jsonDetail = JSON.parse(custDetail);
 
-    $.post("/hmapi_post_custom_inputs/NCIV1S/",
-      {
-        postjson: JSON.stringify(jsonDetail),
-        clientid: 'registered_email@client.com'  // replace with actual registered clientid, contact ud4h.com for one
-      },
-      function(data,status){
-    console.log("Response Status: " + status);
-    customResponseType = data.type ;
-    if (customResponseType == "FeatureCollection") {
-      console.log("Valid JSON FeatureCollection returned.  Adding to CUSTOM map feature group");
-      // add detail json to leaflet map directly. Very easy!
-      // get requestid from json
-      requestid = data.responseinfo.requestid ;
+$.post("http://api.ud4htools.com/hmapi_post_custom_inputs/NCIV1S/",
+    {
+      postjson: JSON.stringify(jsonDetail),
+      clientid: clientToken
+    },
+    function(data,status){
+      console.log("Response Status: " + status);
+      customResponseType = data.type ;
+      if (customResponseType == "FeatureCollection") {
+        console.log("Valid JSON FeatureCollection returned.  Adding to CUSTOM map feature group");
+        // add detail json to map or otherwise process it
+        addJsonDataToMap(data, map, lyrGroupCustom, "gjtaCustom"); 
 
-      // follow up with summary request
-      $.getJSON("/hmapi_get_summary_json/NCIV1S?clientid=registered_email@client.com&requestid=" + requestid, function(data) { 
-        summaryResponseType = data.type ;
-        if (summaryResponseType == "FeatureCollection") {
-          console.log("Valid JSON FeatureCollection returned.  Adding to SUMMARY map feature group");
-          // add detail json to a leaflet map directly. Very easy!
-        } else {
-          console.log("summaryResponseType = " + summaryResponseType);
-          alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
-        }
-      });       
+        // get requestid from json
+        requestid = data.responseinfo.requestid ;
 
-    } else {
-      console.log("Error based on non-GIS customResponseType: " + customResponseType);
-      alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
-    };
-    $("body").css("cursor", "default");
+        // follow up with summary request
+        $.getJSON("http://api.ud4htools.com/hmapi_get_summary_json/NCIV1S?clientid=" + clientToken + "&requestid=" + requestid, function(data) { 
+          summaryResponseType = data.type ;
+          if (summaryResponseType == "FeatureCollection") {
+            console.log("Valid JSON FeatureCollection returned.  Adding to SUMMARY map feature group");
+            // add summary json to map or otherwise process it
+            addJsonDataToMap(data, map, lyrGroupSummary, "gjtaSummary"); 
 
-    });
+          } else {
+            console.log("summaryResponseType = " + summaryResponseType);
+            alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
+          }
+        });				
+
+      } else {
+        console.log("Error based on non-GIS customResponseType: " + customResponseType);
+        alert("Error returned from " + data.ErrorSource + " API: " + data.Error);
+      };
+
+    }
+  );
 
 ```
 
