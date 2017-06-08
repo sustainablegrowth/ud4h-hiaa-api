@@ -131,7 +131,7 @@ date_time_stamp | When the request was made.
 
 
 ### Example Usage
-Summary request API calls typically follow Detail request calls. The following code demonstrates an example where a json variable containing both GEOID10 values and other values whose keys match the NCIV1S schema are contained in the postjson parameter, i.e. a "custom" request.
+Summary request API calls typically follow Detail request calls. The following code demonstrates an example where the posted geojson variable contains 2 GEOID10 values.
 
 ```
 clientToken = "myregisteredemail@domain.com" ; // REPLACE with your unique registered email token
@@ -202,7 +202,7 @@ The following is a sample of the response output returned from a call to the det
       "date_time_stamp": "2017-06-06 14:59:27.256204",
       "baseline_only_request": "True",
       "custom_request": "False",
-      "clientid": "registered_email@client.com",
+      "clientid": "myregisteredemail@domain.com",
       "featurecount": "2",
       "requestid": "15"
    },
@@ -304,7 +304,7 @@ The following is a sample of the GeoJSON returned from a summary request:
       "custom_request": "False",
       "request_processing_time": "0.247 secs",
       "requestid": "15",
-      "clientid": "registered_email@client.com"
+      "clientid": "myregisteredemail@domain.com"
    },
    "features": [
       {
