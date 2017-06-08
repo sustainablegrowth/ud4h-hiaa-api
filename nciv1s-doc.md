@@ -93,6 +93,7 @@ requestid | An id associated with the request. The __Summary Data Request API__ 
 clientid | Email address associated with the client making the request.
 hm_variant | Name of the health module variant requested, e.g. NCIV1S.
 baseline_only_request | Boolean indicating that the request if for baseline data only.
+custom_request | Boolean indicating that custom fields were detected by the API in the request's 'postjson' parameter
 featurecount | Total number of census block groups in the request.
 request_processing_time | Total time the API took to fulfill request. This total does not include processing time in the client before or after the request is made.
 date_time_stamp | When the request was made.
