@@ -5,11 +5,11 @@ As part of its ongoing work on the Health Impact Assessment Application (HIAA), 
 
 Access to this dataset is available via a web-served health module application programming interface (API).  The NCIV1S API exposes 3 different interfaces to registered clients:
 
-1. Metadata requests.  The API returns a JSON list of all the baseline fields in the NCIV1S health module variant's data model.  Contains data types and descriptions for each variable.  The data is returned in JSON format.
+1. NCIV1S Schema Metadata API.  The API returns a JSON list of all the baseline fields in the NCIV1S health module variant's data model.  Contains data types and descriptions for each variable.  The data is returned in JSON format.
 
-2. Baseline data detail requests.  For each 12-digit CBG GEOID10 included in a properly-formatted JSON object posted to the API, the API returns NCIV1S baseline variables for each requested CBG, as well as geometries representing the requested CBGs, and an overall RequestID (see #3 below).  The data is returned in GeoJSON format.
+2. NCIV1S Data Detail API.  For each 12-digit CBG GEOID10 included in a properly-formatted JSON object posted to the API, the API returns NCIV1S baseline variables for each requested CBG, as well as geometries representing the requested CBGs, and an overall RequestID (see #3 next).  The data is returned in GeoJSON format.
 
-3. Baseline request summary requests.  Clients submit a RequestID returned from a previously executed "Baseline data detail request" (#2 above), and the API returns a single feature containing a summary aggregation of the baseline variable numeric values, as well as a geometry representing the spatial aggregation of the CBG geometries in the original request.  The data is returned in GeoJSON format.
+3. NCIV1S Request Summary API.  Clients submit a RequestID returned from a previously executed "NCIV1S Data Detail" request (#2 above), and the API returns a single feature containing a summary aggregation of the baseline variable numeric values, as well as a geometry representing the spatial aggregation of all the CBG geometries in the original request.  The data is returned in GeoJSON format.
 
 
 ## User Registration
@@ -67,7 +67,7 @@ The above link will return the following JSON (snipped for brevity):
 ]
 ```
 
-## Baseline Data Request API
+## NCIV1S Data Detail API
 Base URL: http://api.ud4htools.com/hmapi_post_custom_inputs/NCIV1S/
 
 HTTP Request Type: POST
@@ -102,7 +102,7 @@ Detail request API calls are usually combined with Summary request calls.  See _
 
 
 
-## Summary Data Request API
+## NCIV1S Request Summary API
 Base URL: http://api.ud4htools.com/hmapi_get_summary_json/NCIV1S/
 
 HTTP Request Type: GET
