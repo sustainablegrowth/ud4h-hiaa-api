@@ -12,6 +12,10 @@ Access to this dataset is available via a web-served health module application p
 3. NCIV1S Request Summary API.  Clients submit a RequestID returned from a previously executed "NCIV1S Data Detail" request (#2 above), and the API returns a single feature containing a summary aggregation of the baseline variable numeric values, as well as a geometry representing the spatial aggregation of all the CBG geometries in the original request.  The data is returned in GeoJSON format.
 
 
+## Demo - INTERNAL USE ONLY
+
+http://client.ud4hdev.net/hiaa_client_post_baseline/NCIV1S/
+
 ## User Registration
 
 To access the API, users must first register an email address and other organizational information with UD4H.  Contact http://urbandesign4health.com/contact-us-3 to register.  All API requests returning NCIV1S data must contain a registered email address in a parameter called "clientid".
