@@ -84,7 +84,7 @@ Detail request API calls are usually combined with Summary request calls (see be
 ### Response Output
 a GeoJSON-formatted string is returned with two main branches:
 
-1. A GeoJSON-formatted FeatureCollection section containing each CBG feature in the request, attributed with NCIV1S schema properties (inputs and health outcomes, baseline and/or custom).  *NOTE: For individual requests up to 500 CBGs, the API returns the actual CBG polygons in each feature; for requests above 500, the API returns CBG centroid points in each feature.*
+1. A GeoJSON-formatted FeatureCollection section containing each CBG feature in the request, attributed with NCIV1S schema variables.  *NOTE: For individual requests up to 500 CBGs, the API returns the actual CBG polygons in each feature; for requests above 500, the API returns CBG centroid points in each feature.*
 2. A __responseinfo__ section containing information about the request:
 
 Key | Description
@@ -92,13 +92,12 @@ Key | Description
 requestid | An id associated with the request. The __Summary Data Request API__ (see below) requires requestid.
 clientid | Email address associated with the client making the request.
 hm_variant | Name of the health module variant requested, e.g. NCIV1S.
-baseline_only_request | Boolean indicating that the server received a 'baseonly' of True.
-custom_request | Boolean indicating that custom fields were detected by the API in the request's 'postjson' parameter
+baseline_only_request | Boolean indicating that the request if for baseline data only.
 featurecount | Total number of census block groups in the request.
 request_processing_time | Total time the API took to fulfill request. This total does not include processing time in the client before or after the request is made.
 date_time_stamp | When the request was made.
 
-Detail request API calls are usually combined with Summary request calls.  See __Example Usage__ in the Summary Request API (below) for such a combined example.
+Detail request API calls are usually followed immediately by a related Summary request API call.  See __Example Usage__ in the Summary Request API (next) for such a typical combined example.
 
 
 
